@@ -1,6 +1,7 @@
 package ru.vk.education.job.controller;
 
 import ru.vk.education.job.domain.*;
+import ru.vk.education.job.services.FileService;
 import ru.vk.education.job.services.Suggester;
 import ru.vk.education.job.storages.UsersStorage;
 import ru.vk.education.job.storages.VacancyStorage;
@@ -20,35 +21,48 @@ public class Controller {
     }
 
     public void run() {
-        boolean isRunning = true;
+        FileService fs = new FileService();
 
-        try (Scanner scanner = new Scanner(System.in)) {
-            while (isRunning) {
-                String command = scanner.nextLine();
-
-                if (command.equals("exit")) {
-                    isRunning = false;
-                } else if (command.startsWith("suggest")) {
-                    String out = suggestHandler(command.split(" ")[1]);
-
-                    System.out.println(out);
-                } else if (command.equals("user-list")) {
-                    String out = userlistHandler();
-
-                    System.out.println(out);
-                } else if (command.startsWith("job-list")) {
-                    String out = joblistHandler();
-
-                    System.out.println(out);
-                } else if (command.startsWith("user")) {
+            for (String command : fs.getLastCommands()) {
+                if (command.startsWith("user ")) {
                     userHandler(command);
-                } else if (command.startsWith("job")) {
+                } else if (command.startsWith("job ")) {
                     jobHandler(command);
-                } else {
-                    System.out.println(">>> unsupported command");
                 }
             }
-        }
+
+            boolean isRunning = true;
+
+            try (Scanner scanner = new Scanner(System.in)) {
+                while (isRunning) {
+                    String command = scanner.nextLine();
+
+                    if (command.equals("exit")) {
+                        isRunning = false;
+                        continue;
+                    } else if (command.startsWith("suggest")) {
+                        String out = suggestHandler(command.split(" ")[1]);
+                        System.out.println(out);
+                    } else if (command.equals("user-list")) {
+                        String out = userlistHandler();
+                        System.out.println(out);
+                    } else if (command.startsWith("job-list")) {
+                        String out = joblistHandler();
+                        System.out.println(out);
+                    } else if (command.startsWith("user ")) {
+                        userHandler(command);
+                    } else if (command.startsWith("job ")) {
+                        jobHandler(command);
+                    } else if (command.equals("history")) {
+                        String out = historyHandler(fs);
+                        System.out.println(out);
+                    } else {
+                        System.out.println(">>> unsupported command");
+                    }
+
+                    fs.saveCommand(command);
+                }
+            }
     }
 
     private String suggestHandler(String username) {
@@ -164,6 +178,24 @@ public class Controller {
         }
 
         return new Vacancy(title, new Company(companyName), tags, new Experience(expValue));
+    }
+
+    private String historyHandler(FileService fs) {
+        if (fs == null) {
+            throw new IllegalArgumentException();
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String command : fs.getLastCommands()) {
+            sb.append(command).append('\n');
+        }
+
+        if (!sb.isEmpty()) {
+            sb.delete(sb.length() - 1, sb.length());
+        }
+
+        return sb.toString();
     }
 
 }
