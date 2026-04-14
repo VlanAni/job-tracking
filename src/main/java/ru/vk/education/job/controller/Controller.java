@@ -2,6 +2,7 @@ package ru.vk.education.job.controller;
 
 import ru.vk.education.job.domain.*;
 import ru.vk.education.job.services.FileService;
+import ru.vk.education.job.services.Statistic;
 import ru.vk.education.job.services.Suggester;
 import ru.vk.education.job.storages.UsersStorage;
 import ru.vk.education.job.storages.VacancyStorage;
@@ -56,6 +57,9 @@ public class Controller {
                     } else if (command.equals("history")) {
                         String out = historyHandler(fs);
                         System.out.println(out);
+                    } else if (command.startsWith("stat ")) {
+                        String out = statHandler(command);
+                        System.out.println(out);
                     } else {
                         System.out.println(">>> unsupported command");
                     }
@@ -79,9 +83,14 @@ public class Controller {
         List<Vacancy> suggestedVacancies = suggester.suggest(user);
 
         StringBuilder sb = new StringBuilder();
+        int amount = 0;
         for (Vacancy v : suggestedVacancies) {
             if (!sb.isEmpty()) {sb.append('\n');}
             sb.append(v.toString());
+            amount++;
+            if (amount == 2) {
+                break;
+            }
         }
 
         return sb.toString();
@@ -198,4 +207,64 @@ public class Controller {
         return sb.toString();
     }
 
+    private String statHandler(String command) {
+        String[] tokens = command.split(" ");
+        String flag = tokens[1];
+        String argument = tokens[2];
+
+        switch (flag) {
+            case "--exp" -> {
+                int value = Integer.parseInt(argument);
+                Experience exp = new Experience(value);
+                List<Vacancy> vacancies = Statistic.vacancyExpStat(exp, vs);
+                StringBuilder sb = new StringBuilder();
+
+                for (Vacancy vacancy : vacancies) {
+                    sb.append(vacancy.toString());
+                    sb.append('\n');
+                }
+
+                if (!sb.isEmpty()) {
+                    sb.delete(sb.length() - 1, sb.length());
+                }
+
+                return sb.toString();
+            }
+            case "--match" -> {
+                int n = Integer.parseInt(argument);
+                List<User> users = Statistic.matchStatistic(n, us, vs);
+                StringBuilder sb = new StringBuilder();
+
+                for (User user : users) {
+                    sb.append(user.toString());
+                    sb.append('\n');
+                }
+
+                if (!sb.isEmpty()) {
+                    sb.delete(sb.length() - 1, sb.length());
+                }
+
+                return sb.toString();
+            }
+            case "--top-skills" -> {
+                int n = Integer.parseInt(argument);
+                List<Skill> skills = Statistic.topskills(n, us);
+                StringBuilder sb = new StringBuilder();
+
+                for (Skill skill : skills) {
+                    sb.append(skill.toString());
+                    sb.append('\n');
+                }
+
+                if (!sb.isEmpty()) {
+                    sb.delete(sb.length() - 1, sb.length());
+                }
+
+                return sb.toString();
+            }
+            default -> {
+                return ">>> incorrect flag";
+            }
+        }
+    }
 }

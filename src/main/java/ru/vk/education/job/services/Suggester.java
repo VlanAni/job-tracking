@@ -35,9 +35,10 @@ public class Suggester {
         grades.sort(null);
 
         List<Vacancy> bestVacancies = new ArrayList<>();
-        for (int i = grades.size() - 1;
-             i >= 0 && bestVacancies.size() < 2;
-             --i) { bestVacancies.add(grades.get(i).showVacancy());}
+
+        for (int i = grades.size() - 1; i >= 0; --i) {
+            bestVacancies.add(grades.get(i).showVacancy());
+        }
 
         return bestVacancies;
     }
