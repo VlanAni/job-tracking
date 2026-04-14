@@ -1,10 +1,6 @@
 package ru.vk.education.job.services;
 
-import ru.vk.education.job.domain.Experience;
-import ru.vk.education.job.domain.Grade;
-import ru.vk.education.job.domain.Skill;
-import ru.vk.education.job.domain.User;
-import ru.vk.education.job.domain.Vacancy;
+import ru.vk.education.job.domain.*;
 import ru.vk.education.job.storages.UsersStorage;
 import ru.vk.education.job.storages.VacancyStorage;
 
@@ -24,14 +20,16 @@ public class Statistic {
         Collection<User> users = us.getUsers();
         Collection<Vacancy> vacancies = vs.getVacancies();
 
+        GradeCalculator gc = new SimpleCalculator();
+
         User zeroUser = new User("_zero_", List.of(), new Experience(0));
 
         return users.stream()
                 .filter(user ->
                         vacancies.stream()
                                 .filter(vacancy ->
-                                        new Grade(user, vacancy)
-                                                .compareTo(new Grade(zeroUser, vacancy)) > 0
+                                        gc.calcMatching(user, vacancy)
+                                                .compareTo(gc.calcMatching(zeroUser, vacancy)) > 0
                                 )
                                 .count() >= N
                 )
@@ -60,7 +58,7 @@ public class Statistic {
     ) {
         return vs.getVacancies()
                 .stream()
-                .filter(v -> exp.checkCoverage(v.getRequiredExp()))
+                .filter(v -> exp.checkOverlap(v.experience()))
                 .sorted(Comparator.comparing(Vacancy::name))
                 .toList();
     }
