@@ -32,7 +32,7 @@ public class Experience {
      *
      * @return - is enough experience
      */
-    public boolean checkCompatibility(Experience evaluatedExp) {
+    public boolean checkCoverage(Experience evaluatedExp) {
 
         if (evaluatedExp == null) {
             throw new IllegalArgumentException("Arguments must be non-null");

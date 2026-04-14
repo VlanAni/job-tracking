@@ -31,6 +31,10 @@ public class Vacancy {
         return vacancyName;
     }
 
+    public Experience getRequiredExp() {
+        return requiredExp;
+    }
+
     /**
      * Evaluate a user
      *
@@ -42,7 +46,7 @@ public class Vacancy {
             throw new IllegalArgumentException("User must be non-null");
         }
 
-        return requiredExp.checkCompatibility(user.shareExp());
+        return requiredExp.checkCoverage(user.shareExp());
     }
 
     @Override
