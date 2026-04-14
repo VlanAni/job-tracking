@@ -1,8 +1,6 @@
 package ru.vk.education.job.services;
 
-import ru.vk.education.job.domain.Grade;
-import ru.vk.education.job.domain.User;
-import ru.vk.education.job.domain.Vacancy;
+import ru.vk.education.job.domain.*;
 import ru.vk.education.job.storages.VacancyStorage;
 
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ import java.util.List;
 public class Suggester {
 
     private final VacancyStorage vs;
+    private final GradeCalculator gc;
 
     public Suggester(VacancyStorage vs) {
         if (vs == null) {
@@ -19,6 +18,7 @@ public class Suggester {
         }
 
         this.vs = vs;
+        this.gc = new SimpleCalculator();
     }
 
     public List<Vacancy> suggest(User user) {
@@ -30,14 +30,14 @@ public class Suggester {
 
         List<Grade> grades = new ArrayList<>();
 
-        for (Vacancy v : vacancies) {grades.add(new Grade(user, v));}
+        for (Vacancy v : vacancies) {grades.add(gc.calcMatching(user, v));}
 
         grades.sort(null);
 
         List<Vacancy> bestVacancies = new ArrayList<>();
 
         for (int i = grades.size() - 1; i >= 0; --i) {
-            bestVacancies.add(grades.get(i).showVacancy());
+            bestVacancies.add(grades.get(i).vacancy());
         }
 
         return bestVacancies;

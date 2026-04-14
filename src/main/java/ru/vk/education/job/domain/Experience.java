@@ -4,11 +4,6 @@ public class Experience {
 
     private final int value;
 
-    /**
-     * create an experience
-     *
-     * @param value - the number of working years
-     */
     public Experience(int value) {
 
         if (value < 0) {
@@ -18,22 +13,11 @@ public class Experience {
         this.value = value;
     }
 
-    /**
-     * Get the working years.
-     *
-     * @return - working years
-     */
     public int value() {
         return value;
     }
 
-    /**
-     * Check if there is enough experience
-     *
-     * @return - is enough experience
-     */
-    public boolean checkCoverage(Experience evaluatedExp) {
-
+    public boolean checkOverlap(Experience evaluatedExp) {
         if (evaluatedExp == null) {
             throw new IllegalArgumentException("Arguments must be non-null");
         }

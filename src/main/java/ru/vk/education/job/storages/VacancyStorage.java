@@ -24,4 +24,12 @@ public class VacancyStorage {
     public Collection<Vacancy> getVacancies() {
         return vacancyBase.values();
     }
+
+    public Vacancy getVacancyByName(String name) {
+        return vacancyBase.get(name);
+    }
+
+    public Collection<String> sortedVacanciesNames() {
+        return vacancyBase.keySet().stream().sorted().toList();
+    }
 }

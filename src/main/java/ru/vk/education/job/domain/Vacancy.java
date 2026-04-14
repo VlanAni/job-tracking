@@ -31,23 +31,9 @@ public class Vacancy {
         return vacancyName;
     }
 
-    public Experience getRequiredExp() {
-        return requiredExp;
-    }
+    public Experience experience() {return new Experience(requiredExp.value());}
 
-    /**
-     * Evaluate a user
-     *
-     * @param user - user
-     * @return - grade evaluating how user's experience matched with this vacancy
-     */
-    boolean checkUserExperience(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User must be non-null");
-        }
-
-        return requiredExp.checkCoverage(user.shareExp());
-    }
+    public List<Skill> skills() {return List.copyOf(requiredSkills);}
 
     @Override
     public String toString() {
@@ -56,24 +42,6 @@ public class Vacancy {
                 append(" at ").
                 append(company.name()).
                 toString();
-    }
-
-    int calcUsersMatchedSkills(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("Arguments must be non-null");
-        }
-
-        List<Skill> userSkills = user.shareSkills();
-
-        int matchedSkills = 0;
-        for (Skill reqSkill : requiredSkills) {
-            for (Skill userSkill : userSkills) {
-                if (reqSkill.checkMatch(userSkill)) {
-                    matchedSkills++;
-                }
-            }
-        }
-        return matchedSkills;
     }
 
 }

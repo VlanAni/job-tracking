@@ -9,13 +9,6 @@ public class User {
     private final List<Skill> skills;
     private final Experience exp;
 
-    /**
-     * Create a user
-     *
-     * @param name - user's name
-     * @param skills - the list of user's skills
-     * @param exp - user's experience
-     */
     public User(String name,
                 List<Skill> skills,
                 Experience exp) {
@@ -31,29 +24,14 @@ public class User {
         this.exp = exp;
     }
 
-    /**
-     * User tells his name.
-     *
-     * @return user's name.
-     */
     public String name() {
         return name;
     }
 
-    /**
-     * User tells about his skills.
-     *
-     * @return user's skills list.
-     */
     public List<Skill> shareSkills() {
         return skills;
     }
 
-    /**
-     * User tells about his experience.
-     *
-     * @return user's experience.
-     */
     public Experience shareExp() {
         return exp;
     }
@@ -71,6 +49,18 @@ public class User {
                 append(' ').
                 append(exp.value()).
                 toString();
+    }
+
+    public long checkSkillOverlap(Vacancy vacancy) {
+        return vacancy.
+                skills().
+                stream().
+                filter(this.skills::contains).
+                count();
+    }
+
+    public boolean checkExpOverlap(Vacancy vacancy) {
+        return vacancy.experience().checkOverlap(this.exp);
     }
 
 }

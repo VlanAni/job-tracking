@@ -17,13 +17,15 @@ public class Skill {
         return skillTag;
     }
 
-    public boolean checkMatch(Skill evaluatedSkill) {
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {return false;}
 
-        if (evaluatedSkill == null) {
-            throw new IllegalArgumentException("Arguments must be non-null");
-        }
+        if (o.getClass() != this.getClass()) {return false;}
 
-        return this.skillTag.equals(evaluatedSkill.skillTag);
+        Skill comparatedSkill = (Skill) o;
+
+        return this.skillTag.equals(comparatedSkill.skillTag);
     }
 
     @Override
