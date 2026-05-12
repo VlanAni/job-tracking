@@ -1,16 +1,18 @@
-package ru.vk.education.job.storages;
+package ru.vk.education.job.repository;
 
+import org.springframework.stereotype.Repository;
 import ru.vk.education.job.domain.Vacancy;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class VacancyStorage {
     private final Map<String, Vacancy> vacancyBase;
 
     public VacancyStorage() {
-        vacancyBase = new LinkedHashMap<>();
+        vacancyBase = new ConcurrentHashMap<>();
     }
 
     public void addVacancy(Vacancy vacancy) {

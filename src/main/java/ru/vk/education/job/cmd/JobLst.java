@@ -1,7 +1,8 @@
 package ru.vk.education.job.cmd;
 
 import ru.vk.education.job.domain.Vacancy;
-import ru.vk.education.job.storages.VacancyStorage;
+import ru.vk.education.job.repository.VacancyStorage;
+import ru.vk.education.job.services.JobService;
 
 public class JobLst implements Command<String> {
     private final VacancyStorage vs;
@@ -17,10 +18,13 @@ public class JobLst implements Command<String> {
 
     @Override
     public String execute(String[] args) {
+
+        JobService js = new JobService(vs);
+
         StringBuilder sb = new StringBuilder();
-        for (String vacancyName : vs.sortedVacanciesNames()) {
+        for (Vacancy vacancy : js.listVacancies()) {
             if (!sb.isEmpty()) {sb.append('\n');}
-            sb.append(vs.getVacancyByName(vacancyName).toString());
+            sb.append(vacancy.toString());
         }
 
         return sb.toString();

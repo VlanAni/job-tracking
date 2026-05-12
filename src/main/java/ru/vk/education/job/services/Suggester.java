@@ -1,12 +1,14 @@
 package ru.vk.education.job.services;
 
+import org.springframework.stereotype.Service;
 import ru.vk.education.job.domain.*;
-import ru.vk.education.job.storages.VacancyStorage;
+import ru.vk.education.job.repository.VacancyStorage;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Service
 public class Suggester {
 
     private final VacancyStorage vs;

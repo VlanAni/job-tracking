@@ -3,7 +3,8 @@ package ru.vk.education.job.cmd;
 import ru.vk.education.job.domain.Experience;
 import ru.vk.education.job.domain.Skill;
 import ru.vk.education.job.domain.User;
-import ru.vk.education.job.storages.UsersStorage;
+import ru.vk.education.job.repository.UsersStorage;
+import ru.vk.education.job.services.UserService;
 
 import java.util.*;
 
@@ -27,7 +28,7 @@ public class AddUser implements Command<String> {
             return ">>> incorrect usage";
         }
 
-        us.addUser(parseUser(args));
+        new UserService(us).addUser(parseUser(args));
         return "";
     }
 

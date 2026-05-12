@@ -1,4 +1,4 @@
-package ru.vk.education.job.services;
+package ru.vk.education.job.domain;
 
 import java.util.Arrays;
 

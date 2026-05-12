@@ -4,7 +4,8 @@ import ru.vk.education.job.domain.Company;
 import ru.vk.education.job.domain.Experience;
 import ru.vk.education.job.domain.Skill;
 import ru.vk.education.job.domain.Vacancy;
-import ru.vk.education.job.storages.VacancyStorage;
+import ru.vk.education.job.repository.VacancyStorage;
+import ru.vk.education.job.services.JobService;
 
 import java.util.*;
 
@@ -28,8 +29,7 @@ public class AddJob implements Command<String> {
             return ">>> incorrect usage";
         }
 
-        Vacancy vacancy = parseJob(args);
-        vs.addVacancy(vacancy);
+        new JobService(vs).addJob(parseJob(args));
         return "";
     }
 

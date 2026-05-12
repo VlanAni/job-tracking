@@ -1,11 +1,11 @@
 package ru.vk.education.job.controller;
 
 import ru.vk.education.job.cmd.*;
-import ru.vk.education.job.domain.*;
+import ru.vk.education.job.domain.UserInput;
 import ru.vk.education.job.exceptions.UnsupportedCommandException;
 import ru.vk.education.job.services.*;
-import ru.vk.education.job.storages.UsersStorage;
-import ru.vk.education.job.storages.VacancyStorage;
+import ru.vk.education.job.repository.UsersStorage;
+import ru.vk.education.job.repository.VacancyStorage;
 
 import java.util.*;
 

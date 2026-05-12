@@ -3,17 +3,18 @@ package ru.vk.education.job.cmd;
 import ru.vk.education.job.domain.User;
 import ru.vk.education.job.domain.Vacancy;
 import ru.vk.education.job.services.Suggester;
-import ru.vk.education.job.storages.UsersStorage;
-import ru.vk.education.job.storages.VacancyStorage;
+import ru.vk.education.job.repository.UsersStorage;
+import ru.vk.education.job.repository.VacancyStorage;
+import ru.vk.education.job.services.UserService;
 
 import java.util.List;
 
 public class SuggestCMD implements Command<String> {
-    private final UsersStorage us;
+    private final UserService us;
     private final Suggester suggester;
 
     public SuggestCMD(UsersStorage us, VacancyStorage vs) {
-        this.us = us;
+        this.us = new UserService(us);
         this.suggester = new Suggester(vs);
     }
 

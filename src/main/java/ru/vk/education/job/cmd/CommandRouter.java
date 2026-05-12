@@ -1,6 +1,5 @@
-package ru.vk.education.job.services;
+package ru.vk.education.job.cmd;
 
-import ru.vk.education.job.cmd.Command;
 import ru.vk.education.job.exceptions.UnsupportedCommandException;
 
 import java.util.Map;
