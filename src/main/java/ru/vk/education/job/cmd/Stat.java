@@ -5,8 +5,8 @@ import ru.vk.education.job.domain.Skill;
 import ru.vk.education.job.domain.User;
 import ru.vk.education.job.domain.Vacancy;
 import ru.vk.education.job.services.Statistic;
-import ru.vk.education.job.storages.UsersStorage;
-import ru.vk.education.job.storages.VacancyStorage;
+import ru.vk.education.job.repository.UsersStorage;
+import ru.vk.education.job.repository.VacancyStorage;
 
 import java.util.List;
 
@@ -24,6 +24,8 @@ public class Stat implements Command<String> {
 
     @Override
     public String execute(String[] args) {
+        Statistic statistic = new Statistic(us, vs);
+
         if (args == null) {
             throw new IllegalArgumentException("must be not null");
         }
@@ -40,7 +42,7 @@ public class Stat implements Command<String> {
                 try {
                     int value = Integer.parseInt(argument);
                     Experience exp = new Experience(value);
-                    List<Vacancy> vacancies = Statistic.vacancyExpStat(exp, vs);
+                    List<Vacancy> vacancies = statistic.vacancyExpStat(exp);
                     StringBuilder sb = new StringBuilder();
 
                     for (Vacancy vacancy : vacancies) {
@@ -60,7 +62,7 @@ public class Stat implements Command<String> {
             case "--match" -> {
                 try {
                     int n = Integer.parseInt(argument);
-                    List<User> users = Statistic.matchStatistic(n, us, vs);
+                    List<User> users = statistic.matchStatistic(n);
                     StringBuilder sb = new StringBuilder();
 
                     for (User user : users) {
@@ -80,7 +82,7 @@ public class Stat implements Command<String> {
             case "--top-skills" -> {
                 try {
                     int n = Integer.parseInt(argument);
-                    List<Skill> skills = Statistic.topskills(n, us);
+                    List<Skill> skills = statistic.topskills(n);
                     StringBuilder sb = new StringBuilder();
 
                     for (Skill skill : skills) {

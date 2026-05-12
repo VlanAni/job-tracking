@@ -1,8 +1,11 @@
 package ru.vk.education.job.services;
 
+import org.springframework.stereotype.Service;
+
 import java.nio.file.*;
 import java.util.List;
 
+@Service
 public class FileService {
     private Path path;
 
